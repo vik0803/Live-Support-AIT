@@ -12,3 +12,4 @@
 */
 
 
+ Route::view('/{path?}', 'app');
