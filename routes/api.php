@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+
+// Authentication routes
 Route::group([
 
 	'prefix' => 'auth'

@@ -12,4 +12,5 @@
 */
 
 
- Route::view('/{path?}', 'app');
+// Wildcard route returns the 'app' view which includes the React application
+Route::view('/{path?}', 'app');

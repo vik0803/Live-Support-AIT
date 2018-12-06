@@ -2,17 +2,19 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Button, Form, FormGroup, Col, FormControl } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { loginUser } from '../actions/authentication'
 
 
-class LoginForm extends Component {
+class LoginPage extends Component {
 	
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 
 		this.state = {
 			email: '',
 			password: '',
-			errors: []
+			errors: {}
 		}
 
 		this.handleSubmit = this.handleSubmit.bind(this)
@@ -30,21 +32,31 @@ class LoginForm extends Component {
 	handleSubmit(event) {
 		event.preventDefault()
 
-		const login = {
+		const user = {
 			email: this.state.email,
 			password: this.state.password
 		}
 
-		axios.post('/api/auth/login', login)
-			.then(response => {
-				console.log('Successfully logged in!')
-				this.props.history.push('/')
+		this.props.loginUser(user)
+
+		// axios.post('/api/auth/login', login)
+		// 	.then(response => {
+		// 		console.log('Successfully logged in!')
+		// 		this.props.history.push('/')
+		// 	})
+		// 	.catch(error => {
+		// 		this.setState({
+		// 			errors: error
+		// 		})
+		// 	})
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
 			})
-			.catch(error => {
-				this.setState({
-					errors: error
-				})
-			})
+		}
 	}
 
 
@@ -82,4 +94,8 @@ class LoginForm extends Component {
 }
 
 
-export default LoginForm
+const mapStateToProps = state => ({
+	errors: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })(LoginPage)
