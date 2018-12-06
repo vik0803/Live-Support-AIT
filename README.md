@@ -3,5 +3,6 @@ and the chat operators can manage multiple chats with multiple customers simulta
 
 This project is part of Advanced Interactive Technologies in the third year of HBO-ICT at Hanzehogeschool Groningen.
 
-Front-end: React
+Front-end: React - Axios, Redux, Bootstrap
+
 Back-end: Laravel
