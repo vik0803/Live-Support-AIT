@@ -83590,17 +83590,6 @@ var LoginPage = function (_Component) {
 			};
 
 			this.props.loginUser(user);
-
-			// axios.post('/api/auth/login', login)
-			// 	.then(response => {
-			// 		console.log('Successfully logged in!')
-			// 		this.props.history.push('/')
-			// 	})
-			// 	.catch(error => {
-			// 		this.setState({
-			// 			errors: error
-			// 		})
-			// 	})
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -83609,6 +83598,7 @@ var LoginPage = function (_Component) {
 				this.setState({
 					errors: nextProps.errors
 				});
+				console.log(this.state.errors);
 			}
 		}
 	}, {
@@ -83653,11 +83643,6 @@ var LoginPage = function (_Component) {
 						{ type: 'submit' },
 						'Login'
 					)
-				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'strong',
-					null,
-					this.state.errors ? this.state.errors.toString() : ''
 				)
 			);
 		}

@@ -38,17 +38,6 @@ class LoginPage extends Component {
 		}
 
 		this.props.loginUser(user)
-
-		// axios.post('/api/auth/login', login)
-		// 	.then(response => {
-		// 		console.log('Successfully logged in!')
-		// 		this.props.history.push('/')
-		// 	})
-		// 	.catch(error => {
-		// 		this.setState({
-		// 			errors: error
-		// 		})
-		// 	})
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -56,6 +45,7 @@ class LoginPage extends Component {
 			this.setState({
 				errors: nextProps.errors
 			})
+			console.log(this.state.errors)
 		}
 	}
 
@@ -86,7 +76,6 @@ class LoginPage extends Component {
 					<Button type='submit'>Login</Button>
 				</Form>
 
-				<strong>{this.state.errors ? this.state.errors.toString() : ''}</strong>
 
 			</div>
 		)
