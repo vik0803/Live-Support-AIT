@@ -40,15 +40,6 @@ class LoginPage extends Component {
 		this.props.loginUser(user)
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if(nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			})
-			console.log(this.state.errors)
-		}
-	}
-
 
 	render() {
 		return (
@@ -76,7 +67,7 @@ class LoginPage extends Component {
 					<Button type='submit'>Login</Button>
 				</Form>
 
-
+				{ this.props.errors && <div>{this.props.errors.error}</div> }
 			</div>
 		)
 	}
