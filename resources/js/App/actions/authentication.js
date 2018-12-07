@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { GET_ERRORS, SET_CURRENT_USER } from './types'
-import setAuthorizationToken from '../setAuthorizationToken'
+import setAuthorizationToken from '../utils/setAuthorizationToken'
 import jwt_decode from 'jwt-decode'
 
 

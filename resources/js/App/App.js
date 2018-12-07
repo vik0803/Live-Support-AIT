@@ -8,11 +8,11 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducers'
 import jwt_decode from 'jwt-decode'
 
-import Header from './Header'
-import LoginPage from './LoginPage/LoginPage'
-import HomePage from './HomePage/HomePage'
+import Header from './components/Header'
+import LoginPage from './components/LoginPage/LoginPage'
+import HomePage from './components/HomePage/HomePage'
 
-import setAuthorizationToken from './setAuthorizationToken'
+import setAuthorizationToken from './utils/setAuthorizationToken'
 import { setCurrentUser } from './actions/authentication'
 
 

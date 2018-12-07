@@ -3,11 +3,11 @@ import axios from 'axios'
 import { Button, Form, FormGroup, Col, FormControl } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { loginUser } from '../actions/authentication'
+import { loginUser } from '../../actions/authentication'
 
 
 class LoginPage extends Component {
-	
+
 	constructor(props) {
 		super(props)
 
@@ -44,7 +44,6 @@ class LoginPage extends Component {
 	render() {
 		return (
 			<div>
-
 				<Form horizontal onSubmit={this.handleSubmit}>
 					<FormGroup>
 						<Col sm={2}>
