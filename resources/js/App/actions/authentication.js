@@ -11,7 +11,15 @@ export const setCurrentUser = (user) => {
 	}
 }
 
-
+/**
+ * Logs in user by:
+ * - sending a POST request with mail and password to the API to login the user
+ * - save the JWT token that the API returned to the localStorage
+ * - set the token as default header for the axios requests
+ * - storing the decoded token in the Redux store
+ * @method loginUser
+ * @param  user  object containing email and password
+ */
 export const loginUser = user => dispatch => {
 	axios.post('/api/auth/login', user)
 		.then(response => {
@@ -20,6 +28,30 @@ export const loginUser = user => dispatch => {
 			setAuthorizationToken(token)
 
 			dispatch(setCurrentUser(jwt_decode(token)))
+		})
+		.catch(error => {
+			dispatch({
+				type: GET_ERRORS,
+				payload: error.response.data
+			})
+		})
+}
+
+/**
+ * Logs out the user by:
+ * - sending a POST request to the API to logout the user,
+ * - deleting the JWT token from the localStorage,
+ * - removing the JWT token from the standard Axios headers
+ * - resetting the current user in the Redux store,
+ * - and redirecting to the HomePage
+ * @method logoutUser
+ */
+export const logoutUser = () => dispatch => {
+	axios.post('/api/auth/logout')
+		.then(response => {
+			localStorage.removeItem('jwtToken')
+			setAuthorizationToken(false)
+			dispatch(setCurrentUser({}))
 		})
 		.catch(error => {
 			dispatch({

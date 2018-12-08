@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
+import { logoutUser } from '../actions/authentication'
 
 class Header extends Component {
 	constructor(props) {
@@ -12,21 +13,26 @@ class Header extends Component {
 	}
 
 	handleLogout() {
-		console.log("Logout!")
+		this.props.logoutUser()
 	}
 
 	render() {
 		const isAuthenticated = this.props.auth.isAuthenticated
 
+		/**
+		 * Will be displayed if current user is authenticated
+		 * Contains username and link to logout the user
+		 */
 		const userLinks = (
 			<React.Fragment>
 				<NavItem>{ this.props.auth.user.name }</NavItem>
-				<NavItem onClick={this.logout}>
-					Logout
-				</NavItem>
+				<NavItem onClick={this.handleLogout}>Logout</NavItem>
 			</React.Fragment>
 		)
 
+		/**
+		 * Will be displayed if current user is not authenticated
+		 */
 		const guestLinks = (
 			<React.Fragment>
 				<LinkContainer to='/register'>
@@ -41,21 +47,21 @@ class Header extends Component {
 		return (
 			<Navbar inverse staticTop>
 				<Navbar.Header>
-					<Navbar.Brand>Live Support</Navbar.Brand>
+					<IndexLinkContainer to='/'>
+						<Navbar.Brand>Live Support</Navbar.Brand>
+					</IndexLinkContainer>
 				</Navbar.Header>
 				<Nav>
 					{ isAuthenticated ? userLinks : guestLinks }
-					<LinkContainer to='/'>
-						<NavItem>Home</NavItem>
-					</LinkContainer>
 				</Nav>
 			</Navbar>
 		)
 	}
 }
 
+
 const mapStateToProps = state => ({
 	auth: state.auth
 })
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, { logoutUser })(Header)
