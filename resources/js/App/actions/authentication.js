@@ -21,19 +21,13 @@ export const setCurrentUser = (user) => {
  * @param  user  object containing email and password
  */
 export const loginUser = user => dispatch => {
-	axios.post('/api/auth/login', user)
+	return axios.post('/api/auth/login', user)
 		.then(response => {
 			const token = response.data.access_token
 			localStorage.setItem('jwtToken', token)
 			setAuthorizationToken(token)
 
 			dispatch(setCurrentUser(jwt_decode(token)))
-		})
-		.catch(error => {
-			dispatch({
-				type: GET_ERRORS,
-				payload: error.response.data
-			})
 		})
 }
 
