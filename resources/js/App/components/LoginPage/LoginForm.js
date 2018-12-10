@@ -39,7 +39,7 @@ class LoginForm extends Component {
 				this.setState({
 					error: ""
 				})
-                this.context.router.history.push('/')
+                this.context.router.history.push('/dashboard')
 			})
 			.catch(error => {
 				this.setState({

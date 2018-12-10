@@ -11,8 +11,10 @@ import jwt_decode from 'jwt-decode'
 import Header from './components/Header'
 import LoginPage from './components/LoginPage/LoginPage'
 import HomePage from './components/HomePage/HomePage'
+import DashboardPage from './components/DashboardPage/DashboardPage'
 
 import setAuthorizationToken from './utils/setAuthorizationToken'
+import renderAuthComponent from './utils/renderAuthComponent'
 import { setCurrentUser } from './actions/authentication'
 
 
@@ -25,7 +27,8 @@ export default class App extends Component {
 
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route path='/login' component={LoginPage} />
+                        <Route path='/login' component={renderAuthComponent(LoginPage, 'guest')} />
+                        <Route path='/dashboard' component={renderAuthComponent(DashboardPage, 'user')} />
                     </Switch>
                 </div>
             </BrowserRouter>

@@ -25,7 +25,9 @@ class Header extends Component {
 		 */
 		const userLinks = (
 			<React.Fragment>
-				<NavItem>{ this.props.auth.user.name }</NavItem>
+				<LinkContainer to='/dashboard'>
+					<NavItem>{ this.props.auth.user.name }</NavItem>
+				</LinkContainer>
 				<NavItem onClick={this.handleLogout}>Logout</NavItem>
 			</React.Fragment>
 		)
