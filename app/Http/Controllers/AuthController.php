@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use App\User;
+
 class AuthController extends Controller
 {
 	/**
@@ -16,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -75,11 +77,27 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token)
-    
-{        return response()->json([
+    {
+        return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    /**
+     * Register a new user in the database.
+     *
+     * @method register
+     */
+    protected function register()
+    {
+        $user = request()->validate([
+            'name' => 'string|required|min:3|max:255',
+            'email' => 'email|required|min:5|max:255|unique:users',
+            'password' => 'string|required|min:5|max:255|confirmed'
+        ]);
+
+        User::create($user);
     }
 }
