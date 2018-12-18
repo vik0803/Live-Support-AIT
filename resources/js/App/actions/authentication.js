@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_ERRORS, SET_CURRENT_USER } from './types'
+import { SET_CURRENT_USER } from './types'
 import setAuthorizationToken from '../utils/setAuthorizationToken'
 import jwt_decode from 'jwt-decode'
 
@@ -41,16 +41,25 @@ export const loginUser = user => dispatch => {
  * @method logoutUser
  */
 export const logoutUser = () => dispatch => {
-	axios.post('/api/auth/logout')
+	return axios.post('/api/auth/logout')
 		.then(response => {
 			localStorage.removeItem('jwtToken')
 			setAuthorizationToken(false)
 			dispatch(setCurrentUser({}))
 		})
-		.catch(error => {
-			dispatch({
-				type: GET_ERRORS,
-				payload: error.response.data
-			})
-		})
+}
+
+/**
+ * Resets the user + token on the client side
+ * @method resetUser
+ */
+export const resetUser = () => dispatch => {
+	localStorage.removeItem('jwtToken')
+	setAuthorizationToken(false)
+	dispatch(setCurrentUser({}))
+}
+
+
+export const registerUser = user => dispatch => {
+	return axios.post('/api/auth/register', user)
 }

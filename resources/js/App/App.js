@@ -7,11 +7,16 @@ import thunk from 'redux-thunk'
 import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducers'
 import jwt_decode from 'jwt-decode'
+import { ToastContainer } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import Header from './components/Header'
 import LoginPage from './components/LoginPage/LoginPage'
 import HomePage from './components/HomePage/HomePage'
 import DashboardPage from './components/DashboardPage/DashboardPage'
+import FlashMessagesList from './components/FlashMessages/FlashMessagesList'
+import RegisterPage from './components/RegisterPage/RegisterPage'
 
 import setAuthorizationToken from './utils/setAuthorizationToken'
 import renderAuthComponent from './utils/renderAuthComponent'
@@ -25,10 +30,13 @@ export default class App extends Component {
                 <div>
                     <Header />
 
+                    <ToastContainer />
+
                     <Switch>
                         <Route exact path="/" component={HomePage} />
                         <Route path='/login' component={renderAuthComponent(LoginPage, 'guest')} />
-                        <Route path='/dashboard' component={renderAuthComponent(DashboardPage, 'user')} />
+                        <Route path='/register' component={renderAuthComponent(RegisterPage, 'guest')} />
+                        <Route path='/dashboard' component={renderAuthComponent(DashboardPage)} />
                     </Switch>
                 </div>
             </BrowserRouter>
@@ -37,14 +45,17 @@ export default class App extends Component {
 }
 
 
-const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))
+const store = createStore(
+    rootReducer,
+    compose(
+        applyMiddleware(thunk),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+)
 
 if(localStorage.jwtToken) {
     setAuthorizationToken(localStorage.jwtToken)
     store.dispatch(setCurrentUser(jwt_decode(localStorage.jwtToken)))
-}
-else {
-    store.dispatch(setCurrentUser({}))
 }
 
 ReactDOM.render(

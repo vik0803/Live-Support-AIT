@@ -3,8 +3,18 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 
 
-export default function renderAuthComponent(Component, authType) {
+const renderAuthComponent = (Component, authType='user') => {
     class Authenticate extends React.Component {
+        constructor(props, context) {
+            super(props)
+
+            if(!props.isAuthenticated && authType == 'user') {
+                context.router.history.push('/')
+            }
+            else if(props.isAuthenticated && authType == 'guest') {
+                context.router.history.push('/')
+            }
+        }
 
         componentDidMount() {
             this.checkAndRedirect()
@@ -15,7 +25,7 @@ export default function renderAuthComponent(Component, authType) {
         }
 
         /**
-         * Checks based on auth type if client is allowed to view page. If not, redirect.
+         * Checks if client is allowed to view page based on auth type. If not, redirect.
          * @method checkAndRedirect
          */
         checkAndRedirect() {
@@ -39,8 +49,7 @@ export default function renderAuthComponent(Component, authType) {
     }
 
     Authenticate.propTypes = {
-        isAuthenticated: PropTypes.bool.isRequired,
-        authType: PropTypes.oneOf(['user', 'guest']).isRequired
+        isAuthenticated: PropTypes.bool.isRequired
     }
 
     Authenticate.contextTypes = {
@@ -53,3 +62,10 @@ export default function renderAuthComponent(Component, authType) {
 
     return connect(mapStateToProps)(Authenticate)
 }
+
+// renderAuthComponent.propTypes = {
+//     Component: PropTypes.element.isRequired,
+//     authType: PropTypes.oneOf(['user', 'guest']).isRequired
+// }
+
+export default renderAuthComponent

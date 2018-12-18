@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Button, Form, FormGroup, Col, FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { loginUser } from '../../actions/authentication'
-import PropTypes from 'prop-types';
+import { addFlashMessage } from '../../actions/flashMessage'
+import PropTypes from 'prop-types'
 
 
 class LoginForm extends Component {
@@ -18,7 +18,14 @@ class LoginForm extends Component {
 
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleInputChange = this.handleInputChange.bind(this)
+        this.clearError = this.clearError.bind(this)
 	}
+
+    clearError() {
+        this.setState({
+            error: ""
+        })
+    }
 
     handleInputChange(event) {
 		this.setState({
@@ -36,44 +43,45 @@ class LoginForm extends Component {
 
 		this.props.loginUser(user)
 			.then(response => {
-				this.setState({
-					error: ""
-				})
+                this.props.addFlashMessage({
+                    type: 'success',
+                    message: 'Signed in successfully.'
+                }, true)
                 this.context.router.history.push('/dashboard')
 			})
 			.catch(error => {
 				this.setState({
-					error: "Login failed!"
+					error: "Login failed. Please try again."
 				})
 			})
 	}
 
     render() {
+        const errorMessage = (this.state.error ?
+            <div className='alert alert-dismissible alert-danger'>
+                <button type='button' className='close' onClick={this.clearError}>&times;</button>
+                { this.state.error }
+            </div>
+            : null
+        )
         return (
             <React.Fragment>
-                <Form horizontal onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                        <Col sm={2}>
-                            Email
-                        </Col>
-                        <Col sm={10}>
-                            <FormControl type='email' placeholder='email' name='email' onChange={this.handleInputChange} />
-                        </Col>
-                    </FormGroup>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="inputEmail">Email address</label>
+                        <input type="email" className="form-control" id="inputEmail" name='email' placeholder="Enter email" onChange={this.handleInputChange}/>
+                    </div>
 
-                    <FormGroup>
-                        <Col sm={2}>
-                            Password
-                        </Col>
-                        <Col sm={10}>
-                            <FormControl type='password' name='password' placeholder='Password' onChange={this.handleInputChange} />
-                        </Col>
-                    </FormGroup>
+                    <div className="form-group">
+                        <label htmlFor="inputPassword">Password</label>
+                        <input type="password" className="form-control" id="inputPassword" name='password' placeholder="Password" onChange={this.handleInputChange}/>
+                    </div>
 
-                    <Button type='submit'>Login</Button>
-                </Form>
+                    <button type='submit' className="btn btn-primary">Login</button>
+                </form>
 
-                { this.state.error && <div>{this.state.error}</div> }
+                { errorMessage }
+
             </React.Fragment>
         )
     }
@@ -87,4 +95,4 @@ LoginForm.contextTypes = {
     router: PropTypes.object.isRequired
 }
 
-export default connect(null, { loginUser })(LoginForm)
+export default connect(null, { loginUser, addFlashMessage })(LoginForm)
